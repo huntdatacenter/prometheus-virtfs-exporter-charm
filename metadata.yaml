@@ -2,7 +2,7 @@ name: prometheus-virtfs-exporter
 summary: Prometheus VirtFS Exporter
 maintainer: Matus Kosut <matus.kosut@ntnu.no>
 description: |
-  Exporting VirtFS disk metrics for Prometheus.
+  Prometheus VirtFS Exporter Charm.
 tags:
   - monitoring
   - prometheus
