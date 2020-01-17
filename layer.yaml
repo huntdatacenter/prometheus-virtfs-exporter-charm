@@ -1,4 +1,4 @@
-repo: https://github.com/huntdatacenter/prometheus-virtfs-exporter.git
+repo: https://github.com/huntdatacenter/prometheus-virtfs-exporter-charm.git
 includes:
   - 'layer:basic'
   - 'interface:http'

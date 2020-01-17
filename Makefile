@@ -5,10 +5,10 @@
 # Use bash shell in Make instead of sh
 SHELL := /bin/bash
 # Charm variables
-CHARM_NAME := virtfs-prometheus-exporter
-CHARM_STORE_URL := cs:~huntdatacenter/virtfs-prometheus-exporter
-CHARM_HOMEPAGE := https://github.com/huntdatacenter/charm-virtfs-prometheus-exporter/
-CHARM_BUGS_URL := https://github.com/huntdatacenter/charm-virtfs-prometheus-exporter/issues
+CHARM_NAME := prometheus-virtfs-exporter
+CHARM_STORE_URL := cs:~huntdatacenter/prometheus-virtfs-exporter
+CHARM_HOMEPAGE := https://github.com/huntdatacenter/prometheus-virtfs-exporter-charm/
+CHARM_BUGS_URL := https://github.com/huntdatacenter/prometheus-virtfs-exporter-charm/issues
 CHARM_BUILD_DIR := /tmp/charm-builds
 CHARM_PATH := $(CHARM_BUILD_DIR)/$(CHARM_NAME)
 
