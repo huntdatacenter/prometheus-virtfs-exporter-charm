@@ -31,24 +31,31 @@
       when: pip3_local.stat.exists == false
       tags: install
 
+    - name: Create virtfs exporter directory
+      file:
+        path: /opt/virtfs_exporter
+        state: directory
+        mode: '0755'
+      tags: install
+
     - name: Place libvirt metadata manager
       copy:
         src: libvirtmetadata.py
-        dest: /usr/local/sbin/libvirtmetadata.py
+        dest: /opt/virtfs_exporter/libvirtmetadata.py
       register: lm
       tags: install
 
     - name: Place task scheduler
       copy:
         src: scheduler.py
-        dest: /usr/local/sbin/scheduler.py
+        dest: /opt/virtfs_exporter/scheduler.py
       register: ts
       tags: install
 
     - name: Place virtfs exporter
       copy:
         src: virtfs_exporter.py
-        dest: /usr/local/sbin/virtfs_exporter.py
+        dest: /opt/virtfs_exporter/virtfs_exporter.py
       register: exporter
       tags: install
 
