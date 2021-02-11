@@ -71,8 +71,12 @@ def start():
 @hook('upgrade-charm')
 def upgrade_charm():
     clear_flag('prometheus-virtfs-exporter.version')
-    clear_flag('prometheus-virtfs-exporter.installed')
-    clear_flag('prometheus-virtfs-exporter.configured')
+    apply_playbook(
+        playbook='ansible/playbook.yaml',
+        extra_vars=dict(
+            exp_port=config.get('port'),
+            exp_host=get_ip()[0],
+        ))
     status_set('active', 'ready')
 
 
