@@ -11,8 +11,8 @@ from charms.reactive import endpoint_from_flag
 from charms.reactive import hook
 from charms.reactive import when
 from charms.reactive import when_not
-from charms.reactive.flags import set_flag
 from charms.reactive.flags import clear_flag
+from charms.reactive.flags import set_flag
 
 config = hookenv.config()
 
