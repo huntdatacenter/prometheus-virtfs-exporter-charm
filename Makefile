@@ -38,7 +38,7 @@ test-bionic-bundle: ## Test bionic bundle
 
 
 test-focal-bundle: ## Test focal deployment
-        tox -e test-focal
+	tox -e test-focal
 
 
 push: clean build generate-repo-info ## Push charm to stable channel
