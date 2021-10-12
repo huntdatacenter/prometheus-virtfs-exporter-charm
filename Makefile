@@ -33,12 +33,12 @@ force-upgrade: ## Force upgrade charm
 	juju upgrade-charm $(CHARM_NAME) --path $(CHARM_BUILD_DIR)/$(CHARM_NAME) --force-units
 
 
-test-xenial-bundle: ## Test xenial deployment
-	tox -e test-xenial
-
-
 test-bionic-bundle: ## Test bionic bundle
 	tox -e test-bionic
+
+
+test-focal-bundle: ## Test focal deployment
+        tox -e test-focal
 
 
 push: clean build generate-repo-info ## Push charm to stable channel

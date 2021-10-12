@@ -37,12 +37,12 @@ jobs:
       fail-fast: false
       matrix:
         juju_channel:
-          - 2.5/stable
           - 2.6/stable
           - 2.7/stable
+          - 2.8/stable
         test_bundles:
-          - xenial-bundle
           - bionic-bundle
+          - focal-bundle
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-python@v1
