@@ -8,57 +8,65 @@ jobs:
   lint:
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-python@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
         with:
           python-version: '3.x'
       - run: python3 -m pip install tox
       - name: Run linter
         run: make lint
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-python@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
         with:
-          python-version: '3.7.x'
+          python-version: '3.8.x'
       - run: python3 -m pip install tox
+      - name: Set up lxd
+        run: |
+          sudo snap install lxd --channel=4.0/stable
+          sudo usermod --append --groups lxd $(whoami)
+          sudo su $(whoami) -c 'lxd init --auto'
+          sudo su $(whoami) -c 'lxc network set lxdbr0 ipv6.address none'
+      - name: Install charmcraft
+        run: sudo snap install charmcraft --classic --stable
       - name: Build charm
         run: make build
       - name: Upload charm artifact
         uses: actions/upload-artifact@v1
         with:
           name: charm
-          path: /tmp/charm-builds/prometheus-virtfs-exporter
+          path: /tmp/charm-builds/prometheus-virtfs-exporter.charm
   test:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs: build
     strategy:
       fail-fast: false
       matrix:
         juju_channel:
-          - 2.6/stable
           - 2.7/stable
           - 2.8/stable
         test_bundles:
           - bionic-bundle
           - focal-bundle
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-python@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
         with:
-          python-version: '3.7.x'
+          python-version: '3.8.x'
       - run: python3 -m pip install tox
       - name: Download charm artifact
         uses: actions/download-artifact@v1
         with:
           name: charm
-          path: /tmp/charm-builds/prometheus-virtfs-exporter
+          path: /tmp/charm-builds/prometheus-virtfs-exporter.charm
       # Workarounds for https://github.com/actions/upload-artifact/issues/38
-      - run: chmod +x -R /tmp/charm-builds/prometheus-virtfs-exporter/bin
-      - run: chmod +x -R /tmp/charm-builds/prometheus-virtfs-exporter/hooks
+      # - run: chmod +x -R /tmp/charm-builds/prometheus-virtfs-exporter/bin
+      # - run: chmod +x -R /tmp/charm-builds/prometheus-virtfs-exporter/hooks
       - name: Set up LXD
         run: |
+          sudo snap install lxd --channel=4.0/stable
           sudo usermod --append --groups lxd $(whoami)
           sudo su $(whoami) -c 'lxd init --auto'
           sudo su $(whoami) -c 'lxc network set lxdbr0 ipv6.address none'
