@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-from charmhelpers.contrib.ansible import apply_playbook
+from extensions.ansible import apply_playbook
 from charmhelpers.core import hookenv
 from charmhelpers.core.hookenv import application_version_set
 from charmhelpers.core.hookenv import log

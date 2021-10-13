@@ -1,5 +1,7 @@
 # Use one shell for all commands in a target recipe
 .ONESHELL:
+# Commands
+.PHONY: build
 # Set default goal
 .DEFAULT_GOAL := help
 # Use bash shell in Make instead of sh
@@ -18,19 +20,25 @@ lint: ## Run linter
 
 
 build: ## Build charm
+	mkdir -p $(CHARM_BUILD_DIR)
 	tox -e build
+	cp $(CHARM_NAME)_ubuntu-16.04-amd64.charm $(CHARM_BUILD_DIR)/$(CHARM_NAME).charm
 
 
 deploy: ## Deploy charm
-	juju deploy $(CHARM_BUILD_DIR)/$(CHARM_NAME)
+	juju deploy $(CHARM_BUILD_DIR)/$(CHARM_NAME).charm
 
 
 upgrade: ## Upgrade charm
-	juju upgrade-charm $(CHARM_NAME) --path $(CHARM_BUILD_DIR)/$(CHARM_NAME)
+	juju upgrade-charm $(CHARM_NAME) --path $(CHARM_BUILD_DIR)/$(CHARM_NAME).charm
 
 
 force-upgrade: ## Force upgrade charm
-	juju upgrade-charm $(CHARM_NAME) --path $(CHARM_BUILD_DIR)/$(CHARM_NAME) --force-units
+	juju upgrade-charm $(CHARM_NAME) --path $(CHARM_BUILD_DIR)/$(CHARM_NAME).charm --force-units
+
+
+test-xenial-bundle: ## Test xenial deployment
+	tox -e test-xenial
 
 
 test-bionic-bundle: ## Test bionic bundle
