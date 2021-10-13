@@ -1,0 +1,25 @@
+type: charm
+parts:
+  charm:
+    charm-entrypoint: "src/reactivecharm.py"
+    prime:
+      - layer.yaml
+      - lib/charms/layer/__init__.py
+      - lib/charms/layer/basic.py
+      - lib/charms/layer/execd.py
+      - lib/charms/layer/options.py
+      - lib/extensions/ansible/__init__.py
+      - src/reactivecharm.py
+      - reactive/prometheus_virtfs_exporter.py
+      - ansible/playbook.yaml
+      - ansible/files/libvirtmetadata.py
+      - ansible/files/scheduler.py
+      - ansible/files/virtfs_exporter.py
+      - ansible/templates/virtfs_exporter.service.j2
+bases:
+  - build-on:
+      - name: "ubuntu"
+        channel: "20.04"
+    run-on:
+      - name: "ubuntu"
+        channel: "16.04"

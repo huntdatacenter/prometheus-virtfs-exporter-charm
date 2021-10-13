@@ -1,5 +1,7 @@
 # Use one shell for all commands in a target recipe
 .ONESHELL:
+# Commands
+.PHONY: build
 # Set default goal
 .DEFAULT_GOAL := help
 # Use bash shell in Make instead of sh
@@ -22,15 +24,15 @@ build: ## Build charm
 
 
 deploy: ## Deploy charm
-	juju deploy $(CHARM_BUILD_DIR)/$(CHARM_NAME)
+	juju deploy $(CHARM_BUILD_DIR)/$(CHARM_NAME).charm
 
 
 upgrade: ## Upgrade charm
-	juju upgrade-charm $(CHARM_NAME) --path $(CHARM_BUILD_DIR)/$(CHARM_NAME)
+	juju upgrade-charm $(CHARM_NAME) --path $(CHARM_BUILD_DIR)/$(CHARM_NAME).charm
 
 
 force-upgrade: ## Force upgrade charm
-	juju upgrade-charm $(CHARM_NAME) --path $(CHARM_BUILD_DIR)/$(CHARM_NAME) --force-units
+	juju upgrade-charm $(CHARM_NAME) --path $(CHARM_BUILD_DIR)/$(CHARM_NAME).charm --force-units
 
 
 test-xenial-bundle: ## Test xenial deployment
@@ -39,6 +41,10 @@ test-xenial-bundle: ## Test xenial deployment
 
 test-bionic-bundle: ## Test bionic bundle
 	tox -e test-bionic
+
+
+test-focal-bundle: ## Test focal deployment
+	tox -e test-focal
 
 
 push: clean build generate-repo-info ## Push charm to stable channel

@@ -8,55 +8,63 @@ jobs:
   lint:
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-python@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
         with:
           python-version: '3.x'
-      - run: pip install tox
+      - run: python3 -m pip install tox
       - name: Run linter
         run: make lint
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-python@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
         with:
-          python-version: '3.7.x'
-      - run: pip install tox
+          python-version: '3.8.x'
+      - name: Set up lxd
+        run: |
+          sudo usermod --append --groups lxd $(whoami)
+          sudo su $(whoami) -c 'lxd init --auto'
+          sudo su $(whoami) -c 'lxc network set lxdbr0 ipv6.address none'
+      - name: Install charmcraft
+        run: sudo snap install charmcraft --classic --stable
       - name: Build charm
-        run: make build
+        run: sudo su $(whoami) -c 'charmcraft build --verbose --from .'
       - name: Upload charm artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: charm
-          path: /tmp/charm-builds/prometheus-virtfs-exporter
+          path: prometheus-virtfs-exporter_ubuntu-16.04-amd64.charm
   test:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs: build
     strategy:
       fail-fast: false
       matrix:
         juju_channel:
-          - 2.5/stable
-          - 2.6/stable
           - 2.7/stable
+          - 2.8/stable
         test_bundles:
           - xenial-bundle
           - bionic-bundle
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-python@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
         with:
-          python-version: '3.7.x'
-      - run: pip install tox
+          python-version: '3.8.x'
+      - run: python3 -m pip install tox
       - name: Download charm artifact
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: charm
-          path: /tmp/charm-builds/prometheus-virtfs-exporter
-      # Workarounds for https://github.com/actions/upload-artifact/issues/38
-      - run: chmod +x -R /tmp/charm-builds/prometheus-virtfs-exporter/bin
-      - run: chmod +x -R /tmp/charm-builds/prometheus-virtfs-exporter/hooks
+      - name: Show charm content
+        run: |
+          ls -la prometheus-virtfs-exporter_ubuntu-16.04-amd64.charm
+      - name: Set charm location
+        run: |
+          mkdir -p /tmp/charm-builds
+          mv prometheus-virtfs-exporter_ubuntu-16.04-amd64.charm /tmp/charm-builds/prometheus-virtfs-exporter.charm
       - name: Set up LXD
         run: |
           sudo usermod --append --groups lxd $(whoami)
