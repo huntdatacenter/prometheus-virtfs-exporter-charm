@@ -60,6 +60,10 @@ jobs:
         with:
           name: charm
           path: prometheus-virtfs-exporter_ubuntu-16.04-amd64.charm
+      - name: Set charm location
+        run: |
+          mkdir -p /tmp/charm-builds
+          mv prometheus-virtfs-exporter_ubuntu-16.04-amd64.charm /tmp/charm-builds/prometheus-virtfs-exporter.charm
       - name: Set up LXD
         run: |
           sudo usermod --append --groups lxd $(whoami)
