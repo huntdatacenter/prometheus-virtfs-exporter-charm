@@ -33,7 +33,7 @@ jobs:
       - name: Build charm
         run: sudo su $(whoami) -c 'charmcraft build --verbose --from .'
       - name: Upload charm artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: charm
           path: prometheus-virtfs-exporter_ubuntu-16.04-amd64.charm
@@ -47,8 +47,8 @@ jobs:
           - 2.7/stable
           - 2.8/stable
         test_bundles:
-          - bionic-bundle
-          - focal-bundle
+          - xenial-bundle
+          # - bionic-bundle
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -56,10 +56,12 @@ jobs:
           python-version: '3.8.x'
       - run: python3 -m pip install tox
       - name: Download charm artifact
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: charm
-          path: prometheus-virtfs-exporter_ubuntu-16.04-amd64.charm
+      - name: Show charm content
+        run: |
+          ls -la prometheus-virtfs-exporter_ubuntu-16.04-amd64.charm
       - name: Set charm location
         run: |
           mkdir -p /tmp/charm-builds
