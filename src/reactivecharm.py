@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# flake8: noqa
 
 # Load modules from $JUJU_CHARM_DIR/lib
 import sys

@@ -112,8 +112,7 @@ def bootstrap_charm_deps():
     is_charm_upgrade = hook_name == 'upgrade-charm'
     is_series_upgrade = hook_name == 'post-series-upgrade'
     is_post_upgrade = os.path.exists('wheelhouse/.upgraded')
-    is_upgrade = (not is_post_upgrade and
-                  (is_charm_upgrade or is_series_upgrade))
+    is_upgrade = (not is_post_upgrade and (is_charm_upgrade or is_series_upgrade))
     if is_bootstrapped and not is_upgrade:
         # older subordinates might have downgraded charm-env, so we should
         # restore it if necessary
