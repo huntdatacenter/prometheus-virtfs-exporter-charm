@@ -25,7 +25,6 @@ jobs:
       - run: python3 -m pip install tox
       - name: Set up lxd
         run: |
-          sudo snap install lxd --channel=4.0/stable
           sudo usermod --append --groups lxd $(whoami)
           sudo su $(whoami) -c 'lxd init --auto'
           sudo su $(whoami) -c 'lxc network set lxdbr0 ipv6.address none'
@@ -37,7 +36,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: charm
-          path: /tmp/charm-builds/prometheus-virtfs-exporter.charm
+          path: prometheus-virtfs-exporter_ubuntu-16.04-amd64.charm
   test:
     runs-on: ubuntu-20.04
     needs: build
@@ -60,13 +59,9 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: charm
-          path: /tmp/charm-builds/prometheus-virtfs-exporter.charm
-      # Workarounds for https://github.com/actions/upload-artifact/issues/38
-      # - run: chmod +x -R /tmp/charm-builds/prometheus-virtfs-exporter/bin
-      # - run: chmod +x -R /tmp/charm-builds/prometheus-virtfs-exporter/hooks
+          path: prometheus-virtfs-exporter_ubuntu-16.04-amd64.charm
       - name: Set up LXD
         run: |
-          sudo snap install lxd --channel=4.0/stable
           sudo usermod --append --groups lxd $(whoami)
           sudo su $(whoami) -c 'lxd init --auto'
           sudo su $(whoami) -c 'lxc network set lxdbr0 ipv6.address none'

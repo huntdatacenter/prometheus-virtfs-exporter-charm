@@ -20,9 +20,7 @@ lint: ## Run linter
 
 
 build: ## Build charm
-	mkdir -p $(CHARM_BUILD_DIR)
 	tox -e build
-	cp $(CHARM_NAME)_ubuntu-16.04-amd64.charm $(CHARM_BUILD_DIR)/$(CHARM_NAME).charm
 
 
 deploy: ## Deploy charm
