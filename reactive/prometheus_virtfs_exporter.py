@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from extensions.ansible import apply_playbook
 from charmhelpers.core import hookenv
 from charmhelpers.core.hookenv import application_version_set
 from charmhelpers.core.hookenv import log
@@ -13,6 +12,7 @@ from charms.reactive import when
 from charms.reactive import when_not
 from charms.reactive.flags import clear_flag
 from charms.reactive.flags import set_flag
+from extensions.ansible import apply_playbook
 
 config = hookenv.config()
 

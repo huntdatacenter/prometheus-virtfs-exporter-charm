@@ -115,17 +115,16 @@ of `layer-basic`_ to install Ansible in a virtualenv::
 .. _layer-basic: https://charmsreactive.readthedocs.io/en/latest/layer-basic.html#layer-configuration
 
 """
-import os
+import functools
 import json
+import os
 import stat
 import subprocess
-import functools
 
 import charmhelpers.contrib.templating.contexts
-import charmhelpers.core.host
 import charmhelpers.core.hookenv
+import charmhelpers.core.host
 import charmhelpers.fetch
-
 
 charm_dir = os.environ.get('CHARM_DIR', '')
 ansible_hosts_path = '/etc/ansible/hosts'
@@ -151,7 +150,8 @@ def install_ansible_support(from_ppa=True, ppa_location='ppa:ansible/ansible'):
         charmhelpers.fetch.apt_update(fatal=True)
     charmhelpers.fetch.apt_install('ansible')
     with open(ansible_hosts_path, 'w+') as hosts_file:
-        hosts_file.write('localhost ansible_connection=local ansible_remote_tmp=/root/.ansible/tmp')
+        hosts_file.write(
+            'localhost ansible_connection=local ansible_remote_tmp=/root/.ansible/tmp')
 
 
 def apply_playbook(playbook, tags=None, extra_vars=None):

@@ -1,12 +1,15 @@
 import os
-import sys
 import re
 import shutil
+import sys
 from distutils.version import LooseVersion
-from pkg_resources import Requirement
 from glob import glob
-from subprocess import check_call, check_output, CalledProcessError
+from subprocess import CalledProcessError
+from subprocess import check_call
+from subprocess import check_output
 from time import sleep
+
+from pkg_resources import Requirement
 
 from charms import layer
 from charms.layer.execd import execd_preinstall

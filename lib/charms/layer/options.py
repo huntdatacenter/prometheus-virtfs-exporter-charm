@@ -3,7 +3,6 @@ from pathlib import Path
 
 import yaml
 
-
 _CHARM_PATH = Path(os.environ.get('JUJU_CHARM_DIR', '.'))
 _DEFAULT_FILE = _CHARM_PATH / 'layer.yaml'
 _CACHE = {}

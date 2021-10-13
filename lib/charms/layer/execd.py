@@ -16,9 +16,10 @@
 
 # This module may only import from the Python standard library.
 import os
-import sys
 import subprocess
+import sys
 import time
+
 
 '''
 execd/preinstall
