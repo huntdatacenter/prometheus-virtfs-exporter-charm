@@ -1,11 +1,11 @@
 repo: https://github.com/huntdatacenter/prometheus-virtfs-exporter-charm.git
 includes:
-  - 'layer:basic'
-  - 'interface:http'
-  - 'interface:prometheus-manual'
+  - "layer:basic"
+  - "interface:http"
+  - "interface:prometheus-manual"
 options:
   basic:
-    python_packages: ['ansible']
+    python_packages: ["ansible", "charmhelpers", "charms.reactive"]
     use_venv: true
     include_system_packages: true
 exclude:

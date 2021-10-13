@@ -1,8 +1,15 @@
+# Charmcraft
+*.charm
+
 # Vim
 *.swp
 
 # Tox working folder
 /.tox
+
+lib/*
+!/lib/charms
+!/lib/extensions
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -20,7 +27,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
