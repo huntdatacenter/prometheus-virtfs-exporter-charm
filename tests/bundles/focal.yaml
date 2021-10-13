@@ -1,0 +1,10 @@
+series: focal
+applications:
+  prometheus-virtfs-exporter:
+    charm: /tmp/charm-builds/prometheus-virtfs-exporter.charm
+  ubuntu:
+    charm: cs:ubuntu
+    num_units: 1
+relations:
+- - ubuntu:juju-info
+  - prometheus-virtfs-exporter:nova-compute

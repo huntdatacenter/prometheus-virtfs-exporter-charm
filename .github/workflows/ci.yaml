@@ -22,7 +22,6 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.8.x'
-      # - run: python3 -m pip install tox
       - name: Set up lxd
         run: |
           sudo usermod --append --groups lxd $(whoami)
@@ -48,7 +47,7 @@ jobs:
           - 2.8/stable
         test_bundles:
           - xenial-bundle
-          # - bionic-bundle
+          - bionic-bundle
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
