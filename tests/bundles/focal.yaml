@@ -3,7 +3,7 @@ applications:
   prometheus-virtfs-exporter:
     charm: /tmp/charm-builds/prometheus-virtfs-exporter.charm
   ubuntu:
-    charm: cs:ubuntu
+    charm: cs:ubuntu-18
     num_units: 1
 relations:
 - - ubuntu:juju-info
