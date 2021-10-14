@@ -19,6 +19,7 @@ import csv
 import os
 import subprocess
 import sys
+import tempfile
 from random import randrange
 from time import sleep
 
@@ -120,13 +121,17 @@ def get_virtfs_df_pervolume(libv_meta):
                     continue
 
                 try:  # Subprocess to retrieve data
-                    response = subprocess.run([  # SIGINT after 60s SIGKILL after 90s
-                        'timeout', '--kill-after=90', '--signal=INT', '60', 'virt-df', '--csv', '-P', '1',
-                        '--format={}'.format(image['format']),
-                        '-a',
-                        '{}://{}@{}/{}'.format(image['protocol'],
-                                               image['username'], host, image['path'])
-                    ], stdout=subprocess.PIPE, check=True)  # timeout=60 - taken to lock on one only
+                    with tempfile.TemporaryDirectory(prefix='virtfs-exporter-', dir='/tmp') as tmpdir:
+                        env = {'TMPDIR': tmpdir}
+                        response = subprocess.run([  # SIGINT after 60s SIGKILL after 90s
+                            'timeout', '--kill-after=90', '--signal=INT', '60', 'virt-df', '--csv', '-P', '1',
+                            '--format={}'.format(image['format']),
+                            '-a',
+                            '{}://{}@{}/{}'.format(image['protocol'],
+                                                   image['username'], host, image['path'])
+                        ], stdout=subprocess.PIPE, env=env, check=True)  # timeout=60 - taken to lock on one only
+                except PermissionError as e:
+                    print('[ERROR] VIRT-DF Failed to cleanup tmp: {}'.format(str(e)))
                 except subprocess.CalledProcessError as e:
                     print(
                         '[ERROR] VIRT-DF Exit: {} ({})'.format(image['path'], str(e)))
