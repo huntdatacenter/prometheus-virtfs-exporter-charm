@@ -30,12 +30,14 @@ jobs:
       - name: Install charmcraft
         run: sudo snap install charmcraft --classic --stable
       - name: Build charm
-        run: sudo su $(whoami) -c 'charmcraft build --verbose --from .'
+        run: |
+          sudo su $(whoami) -c 'charmcraft build --verbose --from .'
+          mv prometheus-virtfs-exporter_ubuntu-16.04-amd64_ubuntu-18.04-amd64_ubuntu-20.04-amd64.charm prometheus-virtfs-exporter.charm
       - name: Upload charm artifact
         uses: actions/upload-artifact@v2
         with:
           name: charm
-          path: prometheus-virtfs-exporter_ubuntu-16.04-amd64.charm
+          path: prometheus-virtfs-exporter.charm
   test:
     runs-on: ubuntu-20.04
     needs: build
@@ -58,13 +60,15 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: charm
+          path: /tmp/charm-builds
       - name: Show charm content
         run: |
-          ls -la prometheus-virtfs-exporter_ubuntu-16.04-amd64.charm
-      - name: Set charm location
-        run: |
-          mkdir -p /tmp/charm-builds
-          mv prometheus-virtfs-exporter_ubuntu-16.04-amd64.charm /tmp/charm-builds/prometheus-virtfs-exporter.charm
+          ls -la /tmp/charm-builds
+          ls -la /tmp/charm-builds/prometheus-virtfs-exporter.charm
+      # - name: Set charm location
+      #   run: |
+      #     mkdir -p /tmp/charm-builds
+      #     mv prometheus-virtfs-exporter.charm /tmp/charm-builds/prometheus-virtfs-exporter.charm
       - name: Set up LXD
         run: |
           sudo usermod --append --groups lxd $(whoami)
