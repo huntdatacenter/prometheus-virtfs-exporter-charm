@@ -16,6 +16,8 @@ parts:
       - ansible/files/scheduler.py
       - ansible/files/virtfs_exporter.py
       - ansible/templates/virtfs_exporter.service.j2
+      - hooks/update-status
+      - hooks/upgrade-charm
       - hooks/relations/http/__init__.py
       - hooks/relations/http/interface.yml
       - hooks/relations/http/provides.py
