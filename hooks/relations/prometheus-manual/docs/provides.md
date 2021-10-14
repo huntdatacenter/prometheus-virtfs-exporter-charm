@@ -116,4 +116,3 @@ A list of all requests which have been submitted.
 ## <a id="prometheusmanualprovides-responses"></a>`responses`
 
 A list of all responses which have been received.
-

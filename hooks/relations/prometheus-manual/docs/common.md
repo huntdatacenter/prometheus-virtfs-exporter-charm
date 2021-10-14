@@ -59,4 +59,3 @@ Base class for responses using the request / response pattern.
 ## <a id="jobresponse-fromkeys"></a>`None`
 
 Returns a new dict with keys from iterable and values equal to value.
-

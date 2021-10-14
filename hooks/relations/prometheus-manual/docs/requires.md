@@ -114,4 +114,3 @@ or you can look up relations by their ID.  For example::
     assert all(rel is endpoint.relations[rel.relation_id]
                for rel in endpoint.relations)
     print(', '.join(endpoint.relations.keys()))
-
