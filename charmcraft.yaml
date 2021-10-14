@@ -16,6 +16,18 @@ parts:
       - ansible/files/scheduler.py
       - ansible/files/virtfs_exporter.py
       - ansible/templates/virtfs_exporter.service.j2
+      - hooks/relations/http/__init__.py
+      - hooks/relations/http/interface.yml
+      - hooks/relations/http/provides.py
+      - hooks/relations/http/requires.py
+      - hooks/relations/http/README.md
+      - hooks/relations/prometheus-manual/__init__.py
+      - hooks/relations/prometheus-manual/common.py
+      - hooks/relations/prometheus-manual/interface.yml
+      - hooks/relations/prometheus-manual/copyright.txt
+      - hooks/relations/prometheus-manual/provides.py
+      - hooks/relations/prometheus-manual/requires.py
+      - hooks/relations/prometheus-manual/README.md
 bases:
   - build-on:
       - name: "ubuntu"
@@ -23,3 +35,7 @@ bases:
     run-on:
       - name: "ubuntu"
         channel: "16.04"
+      - name: "ubuntu"
+        channel: "18.04"
+      - name: "ubuntu"
+        channel: "20.04"
