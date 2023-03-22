@@ -12,7 +12,7 @@ from charms.reactive import when
 from charms.reactive import when_not
 from charms.reactive.flags import clear_flag
 from charms.reactive.flags import set_flag
-from extensions.ansible import apply_playbook
+from extensions.ansible import apply_playbook, install_ansible_support
 
 config = hookenv.config()
 
@@ -34,6 +34,7 @@ def set_version():
 @when_not('prometheus-virtfs-exporter.installed')
 def install_deps():
     status_set('maintenance', 'installing dependencies')
+    install_ansible_support()
     apply_playbook(
         playbook='ansible/playbook.yaml',
         extra_vars=dict(
@@ -58,6 +59,7 @@ def stop():
 
 @hook('start')
 def start():
+    install_ansible_support()
     apply_playbook(
         playbook='ansible/playbook.yaml',
         tags=['install'],

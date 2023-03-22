@@ -1,4 +1,7 @@
 - hosts: localhost
+  connection: local
+  become: true
+
   tasks:
     ### VirtFS Prometheus Exporter
     - name: Install dependencies

@@ -117,6 +117,7 @@ of `layer-basic`_ to install Ansible in a virtualenv::
 """
 import functools
 import json
+import logging
 import os
 import stat
 import subprocess
@@ -126,6 +127,7 @@ import charmhelpers.core.hookenv
 import charmhelpers.core.host
 import charmhelpers.fetch
 
+logger = logging.getLogger(__name__)
 charm_dir = os.environ.get('CHARM_DIR', '')
 ansible_hosts_path = '/etc/ansible/hosts'
 # Ansible will automatically include any vars in the following
@@ -145,13 +147,27 @@ def install_ansible_support(from_ppa=True, ppa_location='ppa:ansible/ansible'):
     If ``from_ppa`` is ``False``, then Ansible will be installed from
     Ubuntu's Universe repositories.
     """
-    if from_ppa:
-        charmhelpers.fetch.add_source(ppa_location)
-        charmhelpers.fetch.apt_update(fatal=True)
-    charmhelpers.fetch.apt_install('ansible')
+    # if from_ppa:
+    #     charmhelpers.fetch.add_source(ppa_location)
+    #     charmhelpers.fetch.apt_update(fatal=True)
+    # charmhelpers.fetch.apt_install('ansible')
+
+    subprocess.check_call(["apt-get", "update"])
+    subprocess.check_call(["apt-get", "install", "-y", "ansible"])
+    try:
+        if '/etc/ansible' in ansible_hosts_path:
+            os.makedirs('/etc/ansible/host_vars', mode=0o755, exist_ok=True)
+    except Exception as e:
+        logger.warning('install_ansible_support failed to create /etc/ansible: {}'.format(str(e)))
     with open(ansible_hosts_path, 'w+') as hosts_file:
-        hosts_file.write(
-            'localhost ansible_connection=local ansible_remote_tmp=/root/.ansible/tmp')
+        hosts_file.write('[all]\n')
+        config = ' '.join([
+            'localhost',
+            'ansible_connection=local',
+            'ansible_remote_tmp=/root/.ansible/tmp',
+            'ansible_python_interpreter=/usr/bin/python3'
+        ])
+        hosts_file.write('{}\n'.format(config))
 
 
 def apply_playbook(playbook, tags=None, extra_vars=None):
@@ -203,9 +219,9 @@ def apply_playbook(playbook, tags=None, extra_vars=None):
     if proxy_settings:
         env.update(proxy_settings)
     env['PYTHONUNBUFFERED'] = "1"
-    ansible_bin = os.path.join(charm_dir, 'venv', 'bin', 'ansible-playbook')
+    # ansible_bin = os.path.join(charm_dir, 'venv', 'bin', 'ansible-playbook')
     call = [
-        ansible_bin,
+        'ansible-playbook',
         '-c',
         'local',
         playbook,

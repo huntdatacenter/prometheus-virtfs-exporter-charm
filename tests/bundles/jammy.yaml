@@ -1,0 +1,14 @@
+relations:
+- - ubuntu:juju-info
+  - prometheus-virtfs-exporter:nova-compute
+
+series: jammy
+applications:
+  prometheus-virtfs-exporter:
+    charm: huntdatacenter-prometheus-virtfs-exporter
+    channel: stable
+    # charm: /vagrant/prometheus-virtfs-exporter-charm/prometheus-virtfs-exporter_ubuntu-20.04-amd64_ubuntu-22.04-amd64.charm
+  ubuntu:
+    charm: huntdatacenter-ubuntu-lite
+    channel: stable
+    num_units: 1
