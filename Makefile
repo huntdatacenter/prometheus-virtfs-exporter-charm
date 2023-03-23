@@ -30,7 +30,7 @@ launch:
 	&& multipass exec $(VM_NAME) -- cloud-init status
 
 mount:
-	echo "Assure allowed in System settings > Privacy > Full disk access"
+	echo "Assure allowed in System settings > Privacy > Full disk access for multipassd"
 	multipass mount --type 'classic' --uid-map $(shell id -u):1000 --gid-map $(shell id -g):1000 $(PWD) $(VM_NAME):$(MOUNT_TARGET)
 
 umount:

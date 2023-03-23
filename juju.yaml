@@ -61,10 +61,5 @@ runcmd:
     sudo -u ubuntu HOME=/home/ubuntu juju
     sudo -u ubuntu bash -c "echo alias watch-juju=\'watch --color -n1 juju status --color\' >> /home/ubuntu/.bashrc"
 
-  # - |
-  #   # Bootstrap juju controller
-  #   sudo -u ubuntu HOME=/home/ubuntu juju
-  #   sudo -u ubuntu HOME=/home/ubuntu juju bootstrap localhost lxd
-
 final_message: "The system is finally up, after $UPTIME seconds"
 

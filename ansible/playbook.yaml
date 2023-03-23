@@ -70,12 +70,19 @@
       register: service
       tags: install
 
-    - name: Restart and assured enabled virtfs_exporter
+    - name: Assure virtfs_exporter service enabled
+      systemd:
+        name: virtfs_exporter
+        enabled: yes
+        daemon-reload: "{{ service.changed }}"
+      ignore_errors: yes
+      tags: install
+
+    - name: Restart virtfs_exporter
       systemd:
         name: virtfs_exporter
         state: restarted
         enabled: yes
-        daemon-reload: "{{ service.changed }}"
       register: service_restart
       when: exporter.changed or lm.changed or ts.changed or prom_c.changed or service.changed
       ignore_errors: yes
