@@ -12,8 +12,9 @@ parts:
       - python3-venv
       - python3-testresources
       - python3-pkg-resources
-    charm-python-packages:
-      - "setuptools<58"
+    # source: .
+    # plugin: reactive
+    # build-snaps: [charm]
     prime:
       - layer.yaml
       - lib/charms/layer/__init__.py
